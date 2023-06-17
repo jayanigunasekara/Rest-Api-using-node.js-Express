@@ -2,10 +2,17 @@ import pool from "../../config/database.js";
 
 const queries = {
   create: (data, callBack) => {
+    console.log("Birthday", data.birthday);
+    const birthday = new Date(data.birthday)
+      .toISOString()
+      .slice(0, 19)
+      .replace("T", " ");
+
+    console.log("new birthday", birthday);
     pool.query(
-      `insert into authentication(firstName, lastName, email, password) 
-                values(?,?,?,?)`,
-      [data.firstName, data.lastName, data.email, data.password],
+      `insert into chicken(name, birthday, weight, steps, isRunning	) 
+                values(?,?,?,?,?)`,
+      [data.name, birthday, data.weight, data.steps, data.isRunning],
       (error, results, fields) => {
         if (error) {
           callBack(error);
@@ -15,9 +22,9 @@ const queries = {
     );
   },
 
-  getUsers: (callBack) => {
+  getChickens: (callBack) => {
     pool.query(
-      `select id,firstName,lastName,email,password from authentication `,
+      `select id, name, birthday, weight, steps, isRunning from chicken `,
       [],
       (error, results, fields) => {
         if (error) {
@@ -28,9 +35,9 @@ const queries = {
     );
   },
 
-  getUserByUserId: (id, callBack) => {
+  getChickenByChickenId: (id, callBack) => {
     pool.query(
-      `select id,firstName,lastName,email,password from authentication where id = ?`,
+      `select  id, name, birthday, weight, steps, isRunning from chicken where id = ?`,
       [id],
       (error, results, fields) => {
         if (error) {
@@ -41,10 +48,17 @@ const queries = {
     );
   },
 
-  updateUser: (data, callBack) => {
+  updateChicken: (data, callBack) => {
     pool.query(
-      `update authentication set firstName=?, lastName=?,email=?, password=? where id = ?`,
-      [data.firstName, data.lastName, data.email, data.password, data.id],
+      `update chicken set name=?, birthday=?, weight=?, steps=?, isRunning = ? where id = ?`,
+      [
+        data.name,
+        data.birthday,
+        data.weight,
+        data.steps,
+        data.isRunning,
+        data.id,
+      ],
       (error, results, fields) => {
         if (error) {
           callBack(error);
@@ -54,23 +68,10 @@ const queries = {
     );
   },
 
-  deleteUser: (body, callBack) => {
+  deleteChicken: (body, callBack) => {
     pool.query(
-      `delete from authentication  where id = ?`,
+      `delete from chicken where id = ?`,
       [body.id],
-      (error, results, fields) => {
-        if (error) {
-          callBack(error);
-        }
-        return callBack(null, results[0]);
-      }
-    );
-  },
-
-  getUserByEmail: (email, callBack) => {
-    pool.query(
-      `select * from authentication where email=?`,
-      [email],
       (error, results, fields) => {
         if (error) {
           callBack(error);

@@ -1,21 +1,14 @@
 /* const { genSaltSync, hashSync } = require("bcrypt");
 const { create } = require("../users.service"); */
 import { genSaltSync, hashSync, compareSync } from "bcrypt";
-import queries from "./user.service.js";
+import queries from "./chicken.service.js";
 import pkg from "jsonwebtoken";
 const { sign } = pkg;
 //import { sign } from "jsonwebtoken";
 
-const controlUser = {
-  createUser: (req, res) => {
+const controlChickens = {
+  createChicken: (req, res) => {
     const body = req.body;
-    const salt = genSaltSync(10);
-    body.password = hashSync(body.password, salt);
-    // console.log(req);
-    // return res.status(200).json({
-    //   success: 1,
-    //   data: req.body,
-    // });
 
     queries.create(body, (err, results) => {
       if (err) {
@@ -34,9 +27,9 @@ const controlUser = {
     });
   },
 
-  getUserByUserId: (req, res) => {
+  getChickenByChickenId: (req, res) => {
     const { id } = req.params;
-    queries.getUserByUserId(id, (err, results) => {
+    queries.getChickenByChickenId(id, (err, results) => {
       if (err) {
         console.log(err);
         return;
@@ -55,8 +48,8 @@ const controlUser = {
     });
   },
 
-  getUsers: (req, res) => {
-    queries.getUsers((err, results) => {
+  getChickens: (req, res) => {
+    queries.getChickens((err, results) => {
       if (err) {
         console.log(err);
         return;
@@ -68,12 +61,12 @@ const controlUser = {
     });
   },
 
-  updateUser: (req, res) => {
+  updateChicken: (req, res) => {
     const body = req.body;
-    const id = req.param.id;
-    const salt = genSaltSync(10);
-    body.password = hashSync(body.password, salt);
-    queries.updateUser(body, (err, results) => {
+    //const id = req.param.id;
+    //const salt = genSaltSync(10);
+    //body.password = hashSync(body.password, salt);
+    queries.updateChicken(body, (err, results) => {
       if (err) {
         console.log(err);
         return;
@@ -81,7 +74,7 @@ const controlUser = {
       if (!results) {
         return res.json({
           success: 0,
-          message: "Failed to update user",
+          message: "Failed to update chicken",
         });
       }
       return res.json({
@@ -91,10 +84,11 @@ const controlUser = {
     });
   },
 
-  deleteUser: (req, res) => {
+  deleteChicken: (req, res) => {
     //const { id } = req.params;
     const data = req.body;
-    queries.deleteUser(data, (err, results) => {
+    console.log("data  --------:", data);
+    queries.deleteChicken(data, (err, results) => {
       if (err) {
         console.log(err);
         return;
@@ -111,45 +105,6 @@ const controlUser = {
       });
     });
   },
-
-  login: (req, res) => {
-    const body = req.body;
-    queries.getUserByEmail(body.email, (err, results) => {
-      if (err) {
-        console.log("Login error is:", err);
-      }
-      if (!results) {
-        return res.jsont({
-          success: 0,
-          message: "Invalid email or password",
-        });
-      }
-
-      console.log("result pw: ", results.password);
-      console.log("req pw: ", body.password);
-
-      //const result = compareSync(body.password, results.password);
-      const result = body.password === results.password;
-      console.log("Result is : ", result);
-
-      if (result) {
-        results.password = undefined;
-        const jsontoken = sign({ result: results }, "qwe1234", {
-          expiresIn: "1h",
-        });
-        return res.json({
-          success: 1,
-          message: "login successfully",
-          token: jsontoken,
-        });
-      } else {
-        return res.json({
-          success: 0,
-          message: "Invalid user name or password",
-        });
-      }
-    });
-  },
 };
 
-export default controlUser;
+export default controlChickens;

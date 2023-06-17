@@ -8,6 +8,7 @@ router.get("/", controlChickens.getChickens);
 router.get("/:id", controlChickens.getChickenByChickenId);
 router.patch("/update", controlChickens.updateChicken);
 router.delete("/delete", controlChickens.deleteChicken);
+router.patch("/run", controlChickens.updateChickenSteps);
 //router.post("/login", controlChickens);
 
 // router.get("/", controlUser.createUser);

@@ -10,9 +10,16 @@ const queries = {
 
     console.log("new birthday", birthday);
     pool.query(
-      `insert into chicken(name, birthday, weight, steps, isRunning	) 
-                values(?,?,?,?,?)`,
-      [data.name, birthday, data.weight, data.steps, data.isRunning],
+      `insert into chicken(name, birthday, weight, steps, isRunning, Cage_Id	) 
+                values(?,?,?,?,?,?)`,
+      [
+        data.name,
+        birthday,
+        data.weight,
+        data.steps,
+        data.isRunning,
+        data.Cage_Id,
+      ],
       (error, results, fields) => {
         if (error) {
           callBack(error);
@@ -24,7 +31,7 @@ const queries = {
 
   getChickens: (callBack) => {
     pool.query(
-      `select id, name, birthday, weight, steps, isRunning from chicken `,
+      `select id, name, birthday, weight, steps, isRunning, Cage_Id from chicken `,
       [],
       (error, results, fields) => {
         if (error) {
@@ -37,7 +44,7 @@ const queries = {
 
   getChickenByChickenId: (id, callBack) => {
     pool.query(
-      `select  id, name, birthday, weight, steps, isRunning from chicken where id = ?`,
+      `select  id, name, birthday, weight, steps, isRunning, Cage_Id from chicken where id = ?`,
       [id],
       (error, results, fields) => {
         if (error) {
@@ -50,13 +57,14 @@ const queries = {
 
   updateChicken: (data, callBack) => {
     pool.query(
-      `update chicken set name=?, birthday=?, weight=?, steps=?, isRunning = ? where id = ?`,
+      `update chicken set name=?, birthday=?, weight=?, steps=?, isRunning = ?, Cage_Id = ? where id = ?`,
       [
         data.name,
         data.birthday,
         data.weight,
         data.steps,
         data.isRunning,
+        data.Cage_Id,
         data.id,
       ],
       (error, results, fields) => {
@@ -68,15 +76,41 @@ const queries = {
     );
   },
 
-  deleteChicken: (body, callBack) => {
+  deleteChicken: (data, callBack) => {
     pool.query(
       `delete from chicken where id = ?`,
-      [body.id],
+      [data.id],
       (error, results, fields) => {
         if (error) {
           callBack(error);
         }
         return callBack(null, results[0]);
+      }
+    );
+  },
+
+  updateChickenSteps: (data, callBack) => {
+    pool.query(
+      `select steps from chicken where id = ?`,
+      [data.id],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        const newSteps = results[0].steps + 1;
+        console.log("results------", results);
+        pool.query(
+          `update chicken set steps=? where id = ?`,
+          [newSteps, data.id],
+          (error, results, fields) => {
+            if (error) {
+              callBack(error);
+            }
+            return callBack(null, results);
+          }
+        );
+
+        //return callBack(null, results.steps);
       }
     );
   },

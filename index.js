@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 
 //const userRouter = require("./api/users/user.router.js");
 
-app.use("/api/chickens", chickenRouter);
+app.use("/webservice/chicken", chickenRouter);
 
 // app.listen(process.env.APP_PORT, () => {
 //   console.log("Server is running");

@@ -1,10 +1,4 @@
-/* const { genSaltSync, hashSync } = require("bcrypt");
-const { create } = require("../users.service"); */
-import { genSaltSync, hashSync, compareSync } from "bcrypt";
 import queries from "./chicken.service.js";
-import pkg from "jsonwebtoken";
-const { sign } = pkg;
-//import { sign } from "jsonwebtoken";
 
 const controlChickens = {
   createChicken: (req, res) => {
@@ -86,9 +80,9 @@ const controlChickens = {
 
   deleteChicken: (req, res) => {
     //const { id } = req.params;
-    const data = req.body;
+    const body = req.body;
     console.log("data  --------:", data);
-    queries.deleteChicken(data, (err, results) => {
+    queries.deleteChicken(body, (err, results) => {
       if (err) {
         console.log(err);
         return;
@@ -102,6 +96,26 @@ const controlChickens = {
       return res.json({
         success: 1,
         message: "Deleted successfully",
+      });
+    });
+  },
+
+  updateChickenSteps: (req, res) => {
+    const body = req.body;
+    queries.updateChickenSteps(body, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if (!results) {
+        return res.json({
+          success: 0,
+          message: "Failed to update chicken steps",
+        });
+      }
+      return res.json({
+        success: 1,
+        message: "Succefully update the chicken steps",
       });
     });
   },

@@ -3,7 +3,7 @@ import queries from "./chicken.service.js";
 const controlChickens = {
   createChicken: (req, res) => {
     const body = req.body;
-
+    //console.log("body is ---");
     queries.create(body, (err, results) => {
       if (err) {
         console.log(err);
@@ -81,7 +81,7 @@ const controlChickens = {
   deleteChicken: (req, res) => {
     //const { id } = req.params;
     const body = req.body;
-    console.log("data  --------:", data);
+    //console.log("data  --------:", body);
     queries.deleteChicken(body, (err, results) => {
       if (err) {
         console.log(err);

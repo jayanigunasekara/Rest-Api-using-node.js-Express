@@ -109,8 +109,6 @@ const queries = {
             return callBack(null, results);
           }
         );
-
-        //return callBack(null, results.steps);
       }
     );
   },

@@ -5,15 +5,11 @@ import chickenRouter from "./api/chickens/chicken.router.js";
 import cageRouter from "./api/cages/cages.router.js";
 import bodyParser from "body-parser";
 
-//require("dotenv").config();
 dotenv.config();
 
-//const express = require("express");
 const app = express();
 
 app.use(bodyParser.json());
-
-//const userRouter = require("./api/users/user.router.js");
 
 app.use("/webservice/chicken", chickenRouter);
 app.use("/webservice/chicken", cageRouter);

@@ -10,7 +10,4 @@ router.patch("/", controlUser.updateUser);
 router.delete("/", controlUser.deleteUser);
 router.post("/login", controlUser.login);
 
-// router.get("/", controlUser.createUser);
-
-//module.exports = router;
 export default router;

@@ -2,7 +2,6 @@ import pool from "../../config/database.js";
 
 const queries = {
   getNoOfChickenInCageByCageId: (Cage_Id, callBack) => {
-    console.log("Cage id:", Cage_Id);
     pool.query(
       `select distinct chicken.id, count(*) AS Count from chicken WHERE Cage_Id = ? GROUP BY chicken.Cage_Id`,
       [Cage_Id],
@@ -10,7 +9,7 @@ const queries = {
         if (error) {
           callBack(error);
         }
-        console.log("results---", results);
+
         return callBack(null, [{ Count: results[0].Count }]);
       }
     );

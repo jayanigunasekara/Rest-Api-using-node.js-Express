@@ -1,21 +1,13 @@
-/* const { genSaltSync, hashSync } = require("bcrypt");
-const { create } = require("../users.service"); */
 import { genSaltSync, hashSync, compareSync } from "bcrypt";
 import queries from "./user.service.js";
 import pkg from "jsonwebtoken";
 const { sign } = pkg;
-//import { sign } from "jsonwebtoken";
 
 const controlUser = {
   createUser: (req, res) => {
     const body = req.body;
     const salt = genSaltSync(10);
     body.password = hashSync(body.password, salt);
-    // console.log(req);
-    // return res.status(200).json({
-    //   success: 1,
-    //   data: req.body,
-    // });
 
     queries.create(body, (err, results) => {
       if (err) {
@@ -92,7 +84,6 @@ const controlUser = {
   },
 
   deleteUser: (req, res) => {
-    //const { id } = req.params;
     const data = req.body;
     queries.deleteUser(data, (err, results) => {
       if (err) {
@@ -128,7 +119,6 @@ const controlUser = {
       console.log("result pw: ", results.password);
       console.log("req pw: ", body.password);
 
-      //const result = compareSync(body.password, results.password);
       const result = body.password === results.password;
       console.log("Result is : ", result);
 

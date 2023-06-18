@@ -1,19 +1,20 @@
 import queries from "./chicken.service.js";
 
 const controlChickens = {
+  /* create chicken  */
   createChicken: (req, res) => {
     const body = req.body;
-    //console.log("body is ---");
+
     queries.create(body, (err, results) => {
       if (err) {
         console.log(err);
-        //return res.status(500).json({
+
         return res.json({
           success: 0,
           message: "Database connection error" + err,
         });
       }
-      //return res.status(200).json({
+
       return res.json({
         success: 1,
         data: results,
@@ -21,6 +22,7 @@ const controlChickens = {
     });
   },
 
+  /* Get chicken by ID */
   getChickenByChickenId: (req, res) => {
     const { id } = req.params;
     queries.getChickenByChickenId(id, (err, results) => {
@@ -42,6 +44,7 @@ const controlChickens = {
     });
   },
 
+  /* Get chickens */
   getChickens: (req, res) => {
     queries.getChickens((err, results) => {
       if (err) {
@@ -55,11 +58,9 @@ const controlChickens = {
     });
   },
 
+  /* update chicken */
   updateChicken: (req, res) => {
     const body = req.body;
-    //const id = req.param.id;
-    //const salt = genSaltSync(10);
-    //body.password = hashSync(body.password, salt);
     queries.updateChicken(body, (err, results) => {
       if (err) {
         console.log(err);
@@ -78,10 +79,10 @@ const controlChickens = {
     });
   },
 
+  /* Delete chicken  */
   deleteChicken: (req, res) => {
-    //const { id } = req.params;
     const body = req.body;
-    //console.log("data  --------:", body);
+
     queries.deleteChicken(body, (err, results) => {
       if (err) {
         console.log(err);
@@ -100,8 +101,10 @@ const controlChickens = {
     });
   },
 
+  /* Update the chicken steps */
   updateChickenSteps: (req, res) => {
     const body = req.body;
+
     queries.updateChickenSteps(body, (err, results) => {
       if (err) {
         console.log(err);
